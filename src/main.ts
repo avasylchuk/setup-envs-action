@@ -6,7 +6,7 @@ type APP_ENV = 'dev' | 'stg' | 'cmn' | 'tst' | 'dem' | 'prd';
 enum BRANCH_REF {
   DEV = 'refs/heads/lighter-build-image',
   STAGE = 'refs/heads/stg',
-  PROD = 'refs/heads/stg'
+  PROD = 'refs/heads/prd'
 }
 
 const APP_CONFIG: Record<
@@ -33,7 +33,9 @@ const APP_CONFIG: Record<
 const PROJECT_PREFIX = 'keep-5';
 
 function getFrontendS3BucketId(env: APP_ENV): string {
-  return `${env}-${PROJECT_PREFIX}-react-frontend`;
+  core.info(PROJECT_PREFIX);
+  core.info(env);
+  return 'g-test-react-app'; //`${env}-${PROJECT_PREFIX}-react-frontend`;
 }
 
 async function run(): Promise<void> {

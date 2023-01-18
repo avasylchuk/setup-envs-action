@@ -41,7 +41,7 @@ var BRANCH_REF;
 (function (BRANCH_REF) {
     BRANCH_REF["DEV"] = "refs/heads/lighter-build-image";
     BRANCH_REF["STAGE"] = "refs/heads/stg";
-    BRANCH_REF["PROD"] = "refs/heads/stg";
+    BRANCH_REF["PROD"] = "refs/heads/prd";
 })(BRANCH_REF || (BRANCH_REF = {}));
 const APP_CONFIG = {
     [BRANCH_REF.DEV]: {
@@ -59,7 +59,9 @@ const APP_CONFIG = {
 };
 const PROJECT_PREFIX = 'keep-5';
 function getFrontendS3BucketId(env) {
-    return `${env}-${PROJECT_PREFIX}-react-frontend`;
+    core.info(PROJECT_PREFIX);
+    core.info(env);
+    return 'g-test-react-app'; //`${env}-${PROJECT_PREFIX}-react-frontend`;
 }
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
