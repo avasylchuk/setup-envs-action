@@ -8,28 +8,39 @@ enum BRANCH_REF {
   PROD = 'refs/heads/stg'
 }
 
-const APP_ENV: Record<BRANCH_REF, string> = {
-  [BRANCH_REF.DEV]: 'dev',
-  [BRANCH_REF.STAGE]: 'stage',
-  [BRANCH_REF.PROD]: 'prod'
+const APP_CONFIG: Record<
+  BRANCH_REF,
+  {
+    aws_region: string;
+    app_env: string;
+  }
+> = {
+  [BRANCH_REF.DEV]: {
+    aws_region: 'eu-central-1',
+    app_env: 'dev'
+  },
+  [BRANCH_REF.STAGE]: {
+    aws_region: 'eu-central-1',
+    app_env: 'dev'
+  },
+  [BRANCH_REF.PROD]: {
+    aws_region: 'eu-central-1',
+    app_env: 'prd'
+  }
 };
 
 async function run(): Promise<void> {
   try {
     const branch: BRANCH_REF = core.getInput('branch') as BRANCH_REF;
 
-    if (!APP_ENV[branch]) {
+    if (!APP_CONFIG[branch]) {
       throw Error(`Wrong branch ${branch}`);
     }
 
-    const ms = 2000;
-    core.debug(`Waiting ${ms} milliseconds ...`);
+    const {aws_region, app_env} = APP_CONFIG[branch];
 
-    core.debug(new Date().toTimeString());
-    await wait(ms);
-    core.debug(new Date().toTimeString());
-
-    core.setOutput('app_env', APP_ENV[branch]);
+    core.exportVariable('MY_AWS_REGION', aws_region);
+    core.exportVariable('MY_APP_ENV', app_env);
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message);
   }
