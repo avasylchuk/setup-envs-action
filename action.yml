@@ -1,0 +1,11 @@
+name: 'Setup Environment Variables'
+description: 'Provide a description here'
+author: 'Your name or organization here'
+inputs:
+  branch: # change this
+    required: true
+    description: 'Current branch'
+    default: 'none'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
