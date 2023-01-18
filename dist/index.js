@@ -77,9 +77,9 @@ function run() {
 }
 run();
 const PROJECT_PREFIX = 'keep-5';
-const getFrontendS3BucketId = (env) => {
+function getFrontendS3BucketId(env) {
     return `${env}-${PROJECT_PREFIX}-react-frontend`;
-};
+}
 
 
 /***/ }),
