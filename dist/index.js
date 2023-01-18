@@ -57,6 +57,10 @@ const APP_CONFIG = {
         appEnv: 'prd'
     }
 };
+const PROJECT_PREFIX = 'keep-5';
+function getFrontendS3BucketId(env) {
+    return `${env}-${PROJECT_PREFIX}-react-frontend`;
+}
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -76,10 +80,6 @@ function run() {
     });
 }
 run();
-const PROJECT_PREFIX = 'keep-5';
-function getFrontendS3BucketId(env) {
-    return `${env}-${PROJECT_PREFIX}-react-frontend`;
-}
 
 
 /***/ }),

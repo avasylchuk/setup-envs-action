@@ -30,6 +30,12 @@ const APP_CONFIG: Record<
   }
 };
 
+const PROJECT_PREFIX = 'keep-5';
+
+function getFrontendS3BucketId(env: APP_ENV): string {
+  return `${env}-${PROJECT_PREFIX}-react-frontend`;
+}
+
 async function run(): Promise<void> {
   try {
     const branch: BRANCH_REF = core.getInput('branch') as BRANCH_REF;
@@ -49,9 +55,3 @@ async function run(): Promise<void> {
 }
 
 run();
-
-const PROJECT_PREFIX = 'keep-5';
-
-function getFrontendS3BucketId(env: APP_ENV): string {
-  return `${env}-${PROJECT_PREFIX}-react-frontend`;
-}
