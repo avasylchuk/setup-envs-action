@@ -45,16 +45,16 @@ var BRANCH_REF;
 })(BRANCH_REF || (BRANCH_REF = {}));
 const APP_CONFIG = {
     [BRANCH_REF.DEV]: {
-        aws_region: 'eu-central-1',
-        app_env: 'dev'
+        awsRegion: 'eu-central-1',
+        appEnv: 'dev'
     },
     [BRANCH_REF.STAGE]: {
-        aws_region: 'eu-central-1',
-        app_env: 'dev'
+        awsRegion: 'eu-central-1',
+        appEnv: 'stg'
     },
     [BRANCH_REF.PROD]: {
-        aws_region: 'eu-central-1',
-        app_env: 'prd'
+        awsRegion: 'eu-central-1',
+        appEnv: 'prd'
     }
 };
 function run() {
@@ -64,9 +64,10 @@ function run() {
             if (!APP_CONFIG[branch]) {
                 throw Error(`Wrong branch ${branch}`);
             }
-            const { aws_region, app_env } = APP_CONFIG[branch];
-            core.exportVariable('MY_AWS_REGION', aws_region);
-            core.exportVariable('MY_APP_ENV', app_env);
+            const { awsRegion, appEnv } = APP_CONFIG[branch];
+            core.exportVariable('AWS_REGION', awsRegion);
+            core.exportVariable('KEEP_APP_ENV', appEnv);
+            core.exportVariable('KEEP_S3_BUCKET_ID', getFrontendS3BucketId(appEnv));
         }
         catch (error) {
             if (error instanceof Error)
@@ -75,6 +76,10 @@ function run() {
     });
 }
 run();
+const PROJECT_PREFIX = 'keep-5';
+const getFrontendS3BucketId = (env) => {
+    return `${env}-${PROJECT_PREFIX}-react-frontend`;
+};
 
 
 /***/ }),

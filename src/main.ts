@@ -1,5 +1,6 @@
 import * as core from '@actions/core';
-import {wait} from './wait';
+
+type APP_ENV = 'dev' | 'stg' | 'cmn' | 'tst' | 'dem' | 'prd';
 
 // eslint-disable-next-line no-shadow
 enum BRANCH_REF {
@@ -11,21 +12,21 @@ enum BRANCH_REF {
 const APP_CONFIG: Record<
   BRANCH_REF,
   {
-    aws_region: string;
-    app_env: string;
+    awsRegion: string;
+    appEnv: APP_ENV;
   }
 > = {
   [BRANCH_REF.DEV]: {
-    aws_region: 'eu-central-1',
-    app_env: 'dev'
+    awsRegion: 'eu-central-1',
+    appEnv: 'dev'
   },
   [BRANCH_REF.STAGE]: {
-    aws_region: 'eu-central-1',
-    app_env: 'dev'
+    awsRegion: 'eu-central-1',
+    appEnv: 'stg'
   },
   [BRANCH_REF.PROD]: {
-    aws_region: 'eu-central-1',
-    app_env: 'prd'
+    awsRegion: 'eu-central-1',
+    appEnv: 'prd'
   }
 };
 
@@ -37,13 +38,20 @@ async function run(): Promise<void> {
       throw Error(`Wrong branch ${branch}`);
     }
 
-    const {aws_region, app_env} = APP_CONFIG[branch];
+    const {awsRegion, appEnv} = APP_CONFIG[branch];
 
-    core.exportVariable('MY_AWS_REGION', aws_region);
-    core.exportVariable('MY_APP_ENV', app_env);
+    core.exportVariable('AWS_REGION', awsRegion);
+    core.exportVariable('KEEP_APP_ENV', appEnv);
+    core.exportVariable('KEEP_S3_BUCKET_ID', getFrontendS3BucketId(appEnv));
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message);
   }
 }
 
 run();
+
+const PROJECT_PREFIX = 'keep-5';
+
+const getFrontendS3BucketId = (env: APP_ENV): string => {
+  return `${env}-${PROJECT_PREFIX}-react-frontend`;
+};
