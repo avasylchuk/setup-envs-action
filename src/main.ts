@@ -52,6 +52,6 @@ run();
 
 const PROJECT_PREFIX = 'keep-5';
 
-const getFrontendS3BucketId = (env: APP_ENV): string => {
+function getFrontendS3BucketId(env: APP_ENV): string {
   return `${env}-${PROJECT_PREFIX}-react-frontend`;
-};
+}
